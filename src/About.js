@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import History from './History';
 import Description from './Description';
+import Loader from './Loader';
 
 import { Route, Link } from 'react-router-dom';
 
@@ -10,18 +11,26 @@ class About extends Component {
         this.state = {
             name: 'Default name',
             phone: 9915296866,
-            users: []
+            users: [],
+            loader: false
         };
         // console.log("Fired");
         // this.setName = this.setName.bind(this);
-        this.fetchUsers();
+        // this.fetchUsers();
     }
 
     // setname = ()=>{
 
     // }
 
+    toggleLoader = () => {
+        this.setState({
+            loader: !this.state.loader
+        });
+    }
+
     fetchUsers = () => {
+        this.toggleLoader();
         fetch("https://randomuser.me/api/?results=20")
             .then((res) => {
                 return res.json();
@@ -33,6 +42,9 @@ class About extends Component {
             })
             .catch((err) => {
                 console.log(`Error while fetching users ${err}`);
+            })
+            .finally(() => {
+                this.toggleLoader();
             })
     }
 
@@ -54,6 +66,7 @@ class About extends Component {
     render() {
         return (
             <div>About info goes here !!!
+                <Loader loader={this.state.loader} />
                 <History username="God" year="2011">
                     Testing History
                     <input type="text"
@@ -64,6 +77,10 @@ class About extends Component {
                         this.state.name
                     }
                 </History>
+                <br />
+                <button
+                    onClick={this.fetchUsers}
+                >Fetch Users</button>
                 <br />
                 <Link to="/about/description">Description</Link>
                 <Link to="/about">About</Link>
