@@ -2,26 +2,35 @@ import React, { Component } from 'react';
 import History from './History';
 import Description from './Description';
 import Loader from './Loader';
+import cookies from 'react-cookies';
 
 import { Route, Link } from 'react-router-dom';
 
 class About extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             name: 'Default name',
             phone: 9915296866,
             users: [],
             loader: false
         };
+        // console.log("Constructor fired");
         // console.log("Fired");
         // this.setName = this.setName.bind(this);
         // this.fetchUsers();
+        if(cookies.load('access_token') === undefined){
+            this.props.history.push("/login");
+        }
     }
 
-    // setname = ()=>{
+    componentWillMount(){
+        // console.log("Component will mount fired");        
+    }
+    componentDidMount(){
+        // console.log("Component did mount fired");
+    }
 
-    // }
 
     toggleLoader = () => {
         this.setState({
@@ -64,6 +73,7 @@ class About extends Component {
         });
     }
     render() {
+        // console.log("Render function fired");
         return (
             <div>About info goes here !!!
                 <Loader loader={this.state.loader} />
@@ -109,9 +119,11 @@ class About extends Component {
                 <button
                     onClick={this.resetInput}
                 > Reset Input</button>
+                <br />
             </div>
         );
     }
+  
 }
 
 export default About;
