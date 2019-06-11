@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import History from './History';
 import Description from './Description';
 import Loader from './Loader';
+import UserInfo from './UserInfo';
 import cookies from 'react-cookies';
 
 import { Route, Link } from 'react-router-dom';
@@ -19,15 +20,15 @@ class About extends Component {
         // console.log("Fired");
         // this.setName = this.setName.bind(this);
         // this.fetchUsers();
-        if(cookies.load('access_token') === undefined){
+        if (cookies.load('access_token') === undefined) {
             this.props.history.push("/login");
         }
     }
 
-    componentWillMount(){
+    componentWillMount() {
         // console.log("Component will mount fired");        
     }
-    componentDidMount(){
+    componentDidMount() {
         // console.log("Component did mount fired");
     }
 
@@ -76,10 +77,10 @@ class About extends Component {
         // console.log("Render function fired");
         return (
             <div>About info goes here !!!
-                <Loader loader={this.state.loader} />
+<Loader loader={this.state.loader} />
                 <History username="God" year="2011">
                     Testing History
-                    <input type="text"
+<input type="text"
                         onChange={this.setName}
                     />
                     <br />
@@ -92,12 +93,12 @@ class About extends Component {
                     onClick={this.fetchUsers}
                 >Fetch Users</button>
                 <br />
-                <Link to="/about/description">Description</Link>
+                <Link to="/about/description/1/david">Description</Link>
                 <Link to="/about">About</Link>
                 <Link to="/">App</Link>
                 <br />
 
-                <Route path="/about/description" component={Description} />
+                <Route path="/about/description/:id/:info" component={Description} />
                 {
                     this.state.phone
                 }
@@ -110,12 +111,17 @@ class About extends Component {
                                     {
                                         `${v.name.title} ${v.name.first} ${v.name.last}`
                                     }
+                                    &nbsp; &nbsp;
+                <Link to={`/about/user/${v.email}`}>Get Info</Link>
                                 </li>
                             );
                         })
                     }
                 </ul>
                 <br />
+                <Route path="/about/user/:info" component={UserInfo} />
+                <br />
+
                 <button
                     onClick={this.resetInput}
                 > Reset Input</button>
@@ -123,7 +129,7 @@ class About extends Component {
             </div>
         );
     }
-  
+
 }
 
 export default About;
