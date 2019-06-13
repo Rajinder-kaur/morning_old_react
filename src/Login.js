@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import cookies from 'react-cookies';
 import Loader from './Loader';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Login extends Component {
     constructor() {
@@ -11,6 +13,12 @@ class Login extends Component {
             loader: false
         };
     }
+
+    notify = (msg) => {
+        toast.error(msg);
+    };
+
+
     handleEmail = (e) => {
         this.setState({
             email: e.target.value
@@ -46,12 +54,12 @@ class Login extends Component {
                 return res.json();
             })
             .then((result) => {
-                console.log(result);
-                if (result.access_token !== undefined) {
+                if (result.access_token === undefined) {
+                    // alert(result.msg);
+                    this.notify("Wrong email/password");
+                } else {
                     cookies.save('access_token', result.access_token);
                     this.props.history.push("/about");
-                } else {
-                    alert(result.msg);
                 }
             })
             .catch((err) => {
@@ -65,6 +73,7 @@ class Login extends Component {
         return (
             <div>
                 <Loader loader={this.state.loader} />
+                <ToastContainer/>
                 Enter email :- <input type="text"
                     onChange={this.handleEmail}
                 /> <br />

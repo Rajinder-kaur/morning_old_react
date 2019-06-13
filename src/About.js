@@ -45,9 +45,9 @@ class About extends Component {
             .then((res) => {
                 return res.json();
             })
-            .then((result) => {
+            .then((response) => {
                 this.setState({
-                    users: result.results
+                    users: response.results
                 });
             })
             .catch((err) => {
